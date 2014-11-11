@@ -1,16 +1,16 @@
 env = require "node-env-file"
 usb = require "usb"
+OpenTok = require("opentok")
+
 express = require 'express'
 exphbs  = require 'express-handlebars'
 
-
 env "#{__dirname}/.env"
 
-app =
-  tokbox:
-    key: process.env.apiKey
-    session: process.env.sessionID
-    token: process.env.token
+tokbox =
+  key: process.env.apiKey
+  session: process.env.sessionId
+  token: process.env.token
 
 class Missile
 
@@ -50,6 +50,40 @@ class Missile
         @send('stop')
       , duration
 
+console.log """
+=========================================================================
+About to login with tokbox
+key: #{tokbox.key}
+secret: #{tokbox.token}
+=========================================================================
+
+
+"""
+
+opentok = new OpenTok(tokbox.key, tokbox.token)
+
+opentok.createSession (err, session) ->
+  return console.log(err)  if err
+  console.log session.sessionId
 
 missile = new Missile()
 missile.send('left')
+
+app = express()
+app.engine "handlebars", exphbs(defaultLayout: "main")
+app.set "view engine", "handlebars"
+
+
+app.get "/", (req, res) =>
+  res.render "index",
+    key: tokbox.key
+    session: "1_MX40NTA4Mzg0Mn5-MTQxNTcwOTA0NzUxMn5ucXZjR2hYV3JpSjVYc2I0VXFORnBBd21-fg"
+    token: tokbox.token
+
+app.get "/server", (req, res) =>
+  res.render "server",
+    key: tokbox.key
+    session: "1_MX40NTA4Mzg0Mn5-MTQxNTcwOTA0NzUxMn5ucXZjR2hYV3JpSjVYc2I0VXFORnBBd21-fg"
+    token: tokbox.token
+
+app.listen 3000

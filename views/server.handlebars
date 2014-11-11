@@ -1,0 +1,18 @@
+<h2>I am server</h2>
+
+<pre>
+key = {{key}}
+session = {{session}}
+token = {{token}}
+</pre>
+
+<script type="text/javascript">
+  session.connect(token, function(error) {
+    if (error) {
+      console.log(error.message);
+    } else {
+      console.log('connected to session');
+      session.publish('myPublisherDiv', {width: 320, height: 240});
+    }
+  });
+</script>

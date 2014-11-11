@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <script src='//static.opentok.com/webrtc/v2.2/js/opentok.min.js'></script>
+  <h1>Missile Server</h1>
+
+  <div id="myPublisherDiv"></div>
+  <div id="subscribersDiv"></div>
+
+  <script type="text/javascript">
+
+      var apiKey = {{key}};
+      var sessionId = "{{session}}";
+      var token = "{{token}}";
+
+      var session = OT.initSession(apiKey, sessionId);
+
+  </script>
+
+  {{{ body }}}
+</body>
+</html>
