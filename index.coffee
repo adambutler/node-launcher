@@ -1,4 +1,13 @@
+env = require "node-env-file"
 usb = require "usb"
+
+env "#{__dirname}/.env"
+
+app =
+  tokbox:
+    key: process.env.apiKey
+    session: process.env.sessionID
+    token: process.env.token
 
 class Missile
 
@@ -40,4 +49,4 @@ class Missile
 
 
 missile = new Missile()
-missile.send('fire')
+missile.send('left')
