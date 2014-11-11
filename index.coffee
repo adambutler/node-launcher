@@ -1,6 +1,5 @@
 env = require "node-env-file"
 usb = require "usb"
-OpenTok = require("opentok")
 
 express = require 'express'
 exphbs  = require 'express-handlebars'
@@ -49,22 +48,6 @@ class Missile
       setTimeout =>
         @send('stop')
       , duration
-
-console.log """
-=========================================================================
-About to login with tokbox
-key: #{tokbox.key}
-secret: #{tokbox.token}
-=========================================================================
-
-
-"""
-
-opentok = new OpenTok(tokbox.key, tokbox.token)
-
-opentok.createSession (err, session) ->
-  return console.log(err)  if err
-  console.log session.sessionId
 
 missile = new Missile()
 missile.send('left')
