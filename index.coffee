@@ -1,10 +1,5 @@
-env = require "node-env-file"
-usb = require "usb"
-
 express = require 'express'
 exphbs  = require 'express-handlebars'
-
-env "#{__dirname}/.env"
 
 tokbox =
   key: process.env.apiKey
@@ -27,4 +22,4 @@ app.get "/server", (req, res) =>
     session: "1_MX40NTA4Mzg0Mn5-MTQxNTcwOTA0NzUxMn5ucXZjR2hYV3JpSjVYc2I0VXFORnBBd21-fg"
     token: tokbox.token
 
-app.listen 3000
+app.listen process.env.PORT || 3000
