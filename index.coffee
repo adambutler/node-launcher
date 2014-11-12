@@ -1,5 +1,12 @@
+env = require "node-env-file"
+
 express = require 'express'
 exphbs  = require 'express-handlebars'
+
+try
+  env "#{__dirname}/.env"
+catch error
+  console.log error
 
 tokbox =
   key: process.env.apiKey
@@ -13,13 +20,13 @@ app.set "view engine", "handlebars"
 app.get "/", (req, res) =>
   res.render "client",
     key: tokbox.key
-    session: "1_MX40NTA4Mzg0Mn5-MTQxNTcwOTA0NzUxMn5ucXZjR2hYV3JpSjVYc2I0VXFORnBBd21-fg"
+    session: tokbox.sessionID
     token: tokbox.token
 
 app.get "/server", (req, res) =>
   res.render "server",
     key: tokbox.key
-    session: "1_MX40NTA4Mzg0Mn5-MTQxNTcwOTA0NzUxMn5ucXZjR2hYV3JpSjVYc2I0VXFORnBBd21-fg"
+    session: tokbox.sessionID
     token: tokbox.token
 
-app.listen process.env.PORT || 3000
+app.listen process.env.PORT || 5000
