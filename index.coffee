@@ -15,9 +15,8 @@ app = express()
 app.engine "handlebars", exphbs(defaultLayout: "main")
 app.set "view engine", "handlebars"
 
-
 app.get "/", (req, res) =>
-  res.render "index",
+  res.render "client",
     key: tokbox.key
     session: "1_MX40NTA4Mzg0Mn5-MTQxNTcwOTA0NzUxMn5ucXZjR2hYV3JpSjVYc2I0VXFORnBBd21-fg"
     token: tokbox.token

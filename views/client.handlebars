@@ -1,0 +1,36 @@
+<script type="text/javascript">
+  session.connect(token, function(error) {
+    if (error) {
+      console.log(error.message);
+    } else {
+      session.on({
+        streamCreated: function(event) {
+          session.subscribe(event.stream, 'subscribersDiv', {insertMode: 'append'});
+        }
+      });
+
+      var keyAllowed = true;
+
+      $(document).keydown(function(e) {
+        if (!keyAllowed) return;
+        keyAllowed = false;
+        console.log("Sending key "+e.keyCode);
+        session.signal({ data: e.keyCode });
+      });
+
+      $(document).keyup(function(e) {
+        keyAllowed = true;
+        console.log("Sending key stop");
+        session.signal({ data: "stop" });
+      });
+
+      $(document).focus(function(e) {
+        keyAllowed = true;
+      });
+
+    }
+  });
+
+
+</script>
+
