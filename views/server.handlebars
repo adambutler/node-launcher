@@ -1,7 +1,7 @@
 <h2>I am server</h2>
 
 <script type="text/javascript">
-  session.connect(token, function(error) {
+  session.connect("{{ token }}", function(error) {
     if (error) {
       console.log(error.message);
     } else {
