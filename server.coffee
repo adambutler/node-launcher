@@ -95,5 +95,5 @@ app.post "/", (req, res) ->
   missile.stop() if req.query.key == "stop"
   res.send "OK"
 
-app.listen(3000);
+app.listen(5000);
 
