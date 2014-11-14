@@ -12,6 +12,7 @@ class Missile
   wValue: 0x0
   wIndex: 0x0
   disabled: false
+  connected: false
 
   commands:
     down: { data: 0x03, duration: 400 }
@@ -27,21 +28,28 @@ class Missile
       @commands[name].buffer = buffer
 
   getDevice: ->
-    @device = usb.findByIds(@productVendor, @productId)
-    @device.open()
+    try
+      @device = usb.findByIds(@productVendor, @productId)
+      @device.open()
+      console.log @connected = true
+    catch
+      @errorCallback("No device")
 
-  constructor: ->
+  constructor: (@errorCallback) ->
     @getDevice()
-    @generateCommandBuffers()
+    @generateCommandBuffers() if @gotDevice
 
   stop: (callback) ->
-    console.log "DISABLE"
-    @disabled = true
-    @device.controlTransfer(@bmRequestType, @bRequest, @wValue, @wIndex, @commands['stop'].buffer, =>
-      console.log "ENABLE"
-      @disabled = false
-      callback() if callback?
-    )
+    if @gotDevice
+      console.log "DISABLE"
+      @disabled = true
+      @device.controlTransfer(@bmRequestType, @bRequest, @wValue, @wIndex, @commands['stop'].buffer, =>
+        console.log "ENABLE"
+        @disabled = false
+        callback() if callback?
+      )
+    else
+      @errorCallback "Can not call stop without device"
 
   test: ->
     @send 'up'
@@ -66,24 +74,28 @@ class Missile
     , 500)
 
   send: (command, duration) ->
-    unless @disabled
-      @stop =>
-        console.log "Running #{command}"
-        duration = @commands[command].duration unless duration?
-        console.log "DISABLE"
-        @disabled = true
-        @device.controlTransfer(@bmRequestType, @bRequest, @wValue, @wIndex, @commands[command].buffer, =>
-          console.log "ENABLE"
+    if @gotDevice
+      unless @disabled
+        @stop =>
+          console.log "Running #{command}"
+          duration = @commands[command].duration unless duration?
+          console.log "DISABLE"
+          @disabled = true
+          @device.controlTransfer(@bmRequestType, @bRequest, @wValue, @wIndex, @commands[command].buffer, =>
+            console.log "ENABLE"
+            @disabled = false
+          )
+      else
+        console.log "disabled yo"
+        @stop =>
           @disabled = false
-        )
     else
-      console.log "disabled yo"
-      @stop =>
-        @disabled = false
+      @errorCallback "Can not call send without device"
 
-missile = new Missile()
+missile = new Missile (err) ->
+  console.log err if err
+
 missile.test()
-
 
 app.post "/", (req, res) ->
   console.log "Got key #{req.query.key}"

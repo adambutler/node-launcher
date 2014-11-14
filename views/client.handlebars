@@ -31,6 +31,17 @@
     }
   });
 
-
+  setTimeout( function(){
+    $('.loading').addClass('hide');
+    $('.offline').removeClass('hide');
+  }, 3000);
 </script>
 
+<div class="loading">
+  <h1>Loading</h1>
+</div>
+
+<div class="offline hide">
+  <h1>missile.lab.io is offline right now</h1>
+  <h2>Follow <a href="http://twitter.com/labfoo">@lafoo</a> for updates or visit the hacks section on <a href="http://lab.io">lab.io</a></h2>
+</div>

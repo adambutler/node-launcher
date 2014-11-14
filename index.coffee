@@ -11,28 +11,33 @@ catch error
 
 tokbox =
   apiKey: process.env.apiKey
-  token: process.env.token
   apiSecret: process.env.apiSecret
+
+console.log """
+=============================================================
+  apiKey: #{tokbox.apiKey}
+  apiSecret: #{tokbox.apiSecret}
+=============================================================
+"""
 
 opentok = new OpenTok(tokbox.apiKey, tokbox.apiSecret)
 
-console.log """
-apiKey: #{tokbox.apiKey}
-apiSecret: #{tokbox.apiSecret}
-token: #{tokbox.token}
-"""
-
-# Create a tokbox session
-# The session will the OpenTok Media Router:
-opentok.createSession
-  mediaMode: "routed"
-, (err, session) ->
+opentok.createSession {
+  mediaMode: "relayed"
+}, (err, session) ->
   return console.log(err) if err
   tokbox.sessionId = session.sessionId
 
-  tokbox.token = opentok.generateToken tokbox.sessionId,
-    # role: "moderator"
-    expireTime: (new Date().getTime() / 1000) + (30 * 24 * 60 * 60) # in 30 days
+  tokbox.token = opentok.generateToken tokbox.sessionId, {
+    role: "moderator"
+  }
+
+  console.log """
+  apiKey: #{tokbox.apiKey}
+  apiSecret: #{tokbox.apiSecret}
+  sessionId: #{tokbox.sessionId}
+  token: #{tokbox.token}
+  """
 
   app = express()
   app.engine "handlebars", exphbs(defaultLayout: "main")
@@ -44,4 +49,4 @@ opentok.createSession
   app.get "/server", (req, res) =>
     res.render "server", tokbox
 
-  app.listen process.env.PORT || 5000
+  app.listen process.env.PORT || 3000

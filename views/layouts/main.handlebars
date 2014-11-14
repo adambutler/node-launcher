@@ -13,6 +13,9 @@
       width: 100% !important;
       height: 100% !important;
     }
+    .hide {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -22,8 +25,10 @@
   <div id="subscribersDiv"></div>
 
   <script type="text/javascript">
+    var apiKey = "{{apiKey}}";
+    var sessionId = "{{sessionId}}";
     var token = "{{token}}";
-    var session = OT.initSession({{ apiKey }}, "{{ sessionId }}");
+    var session = OT.initSession(apiKey, sessionId);
   </script>
 
   {{{ body }}}

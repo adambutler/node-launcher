@@ -1,12 +1,12 @@
 <h2>I am server</h2>
 
 <script type="text/javascript">
-  session.connect("{{ token }}", function(error) {
+  session.connect(token, function(error) {
     if (error) {
       console.log(error.message);
     } else {
       console.log('connected to session');
-      session.publish('myPublisherDiv', {width: 320, height: 240});
+      session.publish('myPublisherDiv', {width: 1440, height: 1080});
 
       session.on("signal", function(event) {
         console.log("Signal sent from connection " + event.from.id);
