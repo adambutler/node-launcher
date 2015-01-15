@@ -42,7 +42,16 @@ opentok.createSession {
   app = express()
 
   if process.env.user? and process.env.password?
+    console.log """
+=============================================================
+  Using Basic auth
+  user: #{process.env.user}
+  password: #{process.env.password}
+=============================================================
+"""
     app.use express.basicAuth(process.env.user, process.env.password)
+  else
+    console.log "Not using BasicAuth"
 
   app.engine "handlebars", exphbs(defaultLayout: "main")
   app.set "view engine", "handlebars"
