@@ -40,6 +40,10 @@ opentok.createSession {
   """
 
   app = express()
+
+  if process.env.user? and process.env.password?
+    app.use express.basicAuth(process.env.user, process.env.password)
+
   app.engine "handlebars", exphbs(defaultLayout: "main")
   app.set "view engine", "handlebars"
 
