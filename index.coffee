@@ -1,8 +1,9 @@
 env = require "node-env-file"
 
-express = require 'express'
-exphbs  = require 'express-handlebars'
-OpenTok = require 'opentok'
+express   = require 'express'
+exphbs    = require 'express-handlebars'
+basicAuth = require 'basic-auth-connect'
+OpenTok   = require 'opentok'
 
 try
   env "#{__dirname}/.env"
@@ -49,7 +50,7 @@ opentok.createSession {
   password: #{process.env.password}
 =============================================================
 """
-    app.use express.basicAuth(process.env.user, process.env.password)
+    app.use basicAuth(process.env.user, process.env.password)
   else
     console.log "Not using BasicAuth"
 
