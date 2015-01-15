@@ -31,16 +31,16 @@ class Missile
     try
       @device = usb.findByIds(@productVendor, @productId)
       @device.open()
-      console.log @connected = true
+      @connected = true
     catch
       @errorCallback("No device")
 
   constructor: (@errorCallback) ->
     @getDevice()
-    @generateCommandBuffers() if @gotDevice
+    @generateCommandBuffers() if @connected
 
   stop: (callback) ->
-    if @gotDevice
+    if @connected
       console.log "DISABLE"
       @disabled = true
       @device.controlTransfer(@bmRequestType, @bRequest, @wValue, @wIndex, @commands['stop'].buffer, =>
@@ -74,7 +74,7 @@ class Missile
     , 500)
 
   send: (command, duration) ->
-    if @gotDevice
+    if @connected
       unless @disabled
         @stop =>
           console.log "Running #{command}"
