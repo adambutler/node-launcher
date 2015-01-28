@@ -1,47 +1,20 @@
 <script type="text/javascript">
-  session.connect(token, function(error) {
-    if (error) {
-      console.log(error.message);
-    } else {
-      session.on({
-        streamCreated: function(event) {
-          session.subscribe(event.stream, 'subscribersDiv', {insertMode: 'append'});
-        }
-      });
+  var keyAllowed = true;
 
-      var keyAllowed = true;
-
-      $(document).keydown(function(e) {
-        if (!keyAllowed) return;
-        keyAllowed = false;
-        console.log("Sending key "+e.keyCode);
-        session.signal({ data: e.keyCode });
-      });
-
-      $(document).keyup(function(e) {
-        keyAllowed = true;
-        console.log("Sending key stop");
-        session.signal({ data: "stop" });
-      });
-
-      $(document).focus(function(e) {
-        keyAllowed = true;
-      });
-
-    }
+  $(document).keydown(function(e) {
+    if (!keyAllowed) return;
+    keyAllowed = false;
+    console.log("Sending key "+e.keyCode);
+    window.comm.send({ data: e.keyCode });
   });
 
-  setTimeout( function(){
-    $('.loading').addClass('hide');
-    $('.offline').removeClass('hide');
-  }, 3000);
+  $(document).keyup(function(e) {
+    keyAllowed = true;
+    console.log("Sending key stop");
+    window.comm.send({ data: "stop" });
+  });
+
+  $(document).focus(function(e) {
+    keyAllowed = true;
+  });
 </script>
-
-<div class="loading">
-  <h1>Loading</h1>
-</div>
-
-<div class="offline hide">
-  <h1>missile.lab.io is offline right now</h1>
-  <h2>Follow <a href="http://twitter.com/labfoo">@lafoo</a> for updates or visit the hacks section on <a href="http://lab.io">lab.io</a></h2>
-</div>

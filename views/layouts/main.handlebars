@@ -7,28 +7,51 @@
   <script src="//js.pusher.com/2.2/pusher.min.js" type="text/javascript"></script>
 
   <style type="text/css">
-    .OT_mirrored.OT_root.OT_subscriber {
-      position: absolute;
-      top: 0; right: 0; bottom: 0; left: 0;
-      width: 100% !important;
-      height: 100% !important;
+    video {
+        width: 200px;
     }
-    .hide {
-      display: none;
+
+    #localVideo {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        z-index: 1;
+    }
+
+    #remoteVideos {
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+        display: flex;
+        flex-wrap: no-wrap;
+        background: #eee;
+    }
+
+    #remoteVideos video {
+        flex-grow: 1;
     }
   </style>
 </head>
 <body>
-  <script src='//static.opentok.com/webrtc/v2.2/js/opentok.min.js'></script>
-
-  <div id="myPublisherDiv"></div>
-  <div id="subscribersDiv"></div>
+  <video id="localVideo" autoplay></video>
+  <div id="remoteVideos"></div>
+  <script type="text/javascript" src="http://cdn.icecomm.io/icecomm.js"></script>
 
   <script type="text/javascript">
-    var apiKey = "{{apiKey}}";
-    var sessionId = "{{sessionId}}";
-    var token = "{{token}}";
-    var session = OT.initSession(apiKey, sessionId);
+    window.comm = new Icecomm('ORnC9OEFzUqeqKVGVhudFgVrudqLjUYPeWQZ8WWUFI7fpNlW');
+
+    comm.connect('simpleweb', {audio: true});
+
+    comm.on('connected', function(options) {
+       document.getElementById("remoteVideos").appendChild(options.video);
+    });
+
+    comm.on('local', function(options) {
+      localVideo.src = options.stream;
+    });
+
+    comm.on('disconnect', function(options) {
+      document.getElementById(options.callerID).remove();
+    });
   </script>
 
   {{{ body }}}

@@ -1,23 +1,5 @@
-<h2>I am server</h2>
-
 <script type="text/javascript">
-  session.connect(token, function(error) {
-    if (error) {
-      console.log(error.message);
-    } else {
-      console.log('connected to session');
-      session.publish('myPublisherDiv', {width: 1440, height: 1080});
-
-      session.on("signal", function(event) {
-        console.log("Signal sent from connection " + event.from.id);
-        console.log(event.data);
-
-        $.post('http://127.0.0.1:5000?key='+event.data, {data: event.data, headers: { key: event.data }});
-      });
-
-    }
+  comm.on('data', function(event) {
+      $.post('http://127.0.0.1:5000?key='+event.data, {data: event.data, headers: { key: event.data }});
   });
-
-
-
 </script>
