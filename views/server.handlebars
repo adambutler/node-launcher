@@ -1,5 +1,6 @@
 <script type="text/javascript">
   comm.on('data', function(event) {
-      $.post('http://127.0.0.1:5000?key='+event.data, {data: event.data, headers: { key: event.data }});
+    console.log(event)
+    $.post('http://127.0.0.1:5000?key='+event.data.data, {data: event.data.data, headers: { key: event.data.data }});
   });
 </script>
