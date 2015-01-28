@@ -3,64 +3,24 @@ env = require "node-env-file"
 express   = require 'express'
 exphbs    = require 'express-handlebars'
 basicAuth = require 'basic-auth-connect'
-OpenTok   = require 'opentok'
 
 try
   env "#{__dirname}/.env"
 catch error
   console.log error
 
-tokbox =
-  apiKey: process.env.apiKey
-  apiSecret: process.env.apiSecret
+app = express()
 
-console.log """
-=============================================================
-  apiKey: #{tokbox.apiKey}
-  apiSecret: #{tokbox.apiSecret}
-=============================================================
-"""
+if process.env.user? and process.env.password?
+  app.use basicAuth(process.env.user, process.env.password)
 
-opentok = new OpenTok(tokbox.apiKey, tokbox.apiSecret)
+app.engine "handlebars", exphbs(defaultLayout: "main")
+app.set "view engine", "handlebars"
 
-opentok.createSession {
-  mediaMode: "relayed"
-}, (err, session) ->
-  return console.log(err) if err
-  tokbox.sessionId = session.sessionId
+app.get "/", (req, res) =>
+  res.render "client"
 
-  tokbox.token = opentok.generateToken tokbox.sessionId, {
-    role: "moderator"
-  }
+app.get "/server", (req, res) =>
+  res.render "server"
 
-  console.log """
-  apiKey: #{tokbox.apiKey}
-  apiSecret: #{tokbox.apiSecret}
-  sessionId: #{tokbox.sessionId}
-  token: #{tokbox.token}
-  """
-
-  app = express()
-
-  if process.env.user? and process.env.password?
-    console.log """
-=============================================================
-  Using Basic auth
-  user: #{process.env.user}
-  password: #{process.env.password}
-=============================================================
-"""
-    app.use basicAuth(process.env.user, process.env.password)
-  else
-    console.log "Not using BasicAuth"
-
-  app.engine "handlebars", exphbs(defaultLayout: "main")
-  app.set "view engine", "handlebars"
-
-  app.get "/", (req, res) =>
-    res.render "client", tokbox
-
-  app.get "/server", (req, res) =>
-    res.render "server", tokbox
-
-  app.listen process.env.PORT || 3000
+app.listen process.env.PORT || 3000
