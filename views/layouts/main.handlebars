@@ -41,8 +41,8 @@
 
     comm.connect('simpleweb', {audio: true});
 
-    comm.on('connected', function(options) {
-       document.getElementById("remoteVideos").appendChild(options.video);
+    comm.on('connected', function(peer) {
+       document.getElementById("remoteVideos").appendChild(peer.getVideo());
     });
 
     comm.on('local', function(options) {
