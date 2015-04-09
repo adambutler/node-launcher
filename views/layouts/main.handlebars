@@ -29,68 +29,9 @@
     #remoteVideos video {
         flex-grow: 1;
     }
-
-    .chat {
-      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-      z-index: 1;
-      position: absolute;
-      top: 20px; left: 20px;
-      bottom: 30%;
-      width: 230px;
-      background: #fff;
-      border-radius: 4px;
-      padding: 20px;
-    }
-
-    .chat ul {
-      position: absolute;
-      top: 0; right: 0; bottom: 70px; left: 0;
-      list-style: none;
-      padding: 10px;
-      margin: 0;
-      overflow: scroll;
-      padding: 10px 0;
-    }
-
-    #message {
-      box-sizing: border-box;
-      position: absolute;
-      right: 10px;
-      bottom: 10px;
-      left: 10px;
-      height: 55px;
-      width: 250px;
-      padding: 10px;
-      padding-right: 60px;
-    }
-
-    .message {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    #send {
-      position: absolute;
-      bottom: 20px; right: 20px;
-      height: 37px;
-    }
   </style>
 </head>
 <body>
-
-  <div class="chat">
-    <ul>
-      <li class="message">Aenean lacinia bibendum nulla sed consectetur. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
-      <li class="message">Aenean lacinia bibendum nulla sed consectetur. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
-      <li class="message">Aenean lacinia bibendum nulla sed consectetur. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
-      <li class="message">Aenean lacinia bibendum nulla sed consectetur. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
-      <li class="message">Aenean lacinia bibendum nulla sed consectetur. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
-      <li class="message">Aenean lacinia bibendum nulla sed consectetur. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
-    </ul>
-    <textarea id="message"></textarea>
-    <button id="send">Send</button>
-  </div>
-
   <video id="localVideo" autoplay></video>
   <div id="remoteVideos"></div>
   <script type="text/javascript" src="http://cdn.icecomm.io/icecomm.js"></script>
